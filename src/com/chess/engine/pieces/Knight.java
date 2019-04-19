@@ -20,7 +20,7 @@ public class Knight extends Piece {
 
 
 
-    Knight(final int piecePosition, final Alliance pieceAlliance) {
+    public Knight( final Alliance pieceAlliance,final int piecePosition) {
         super(piecePosition, pieceAlliance);
     }
 

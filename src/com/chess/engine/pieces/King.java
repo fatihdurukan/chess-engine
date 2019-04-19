@@ -17,7 +17,7 @@ public class King extends Piece {
 
     public final static int[] CANDIATE_MOVE_VECTOR_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    King(int piecePosition, Alliance pieceAlliance) {
+    public King(Alliance pieceAlliance, int piecePosition) {
         super(piecePosition, pieceAlliance);
     }
 
@@ -29,7 +29,7 @@ public class King extends Piece {
         for (final int currentCandidateOffset : CANDIATE_MOVE_VECTOR_COORDINATES){
 
             final int candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
-            
+
             //edge cases
             if(isFirstColumnExclusion(this.piecePosition, currentCandidateOffset) ||
                 isEighthColumnExclusion(this.piecePosition, currentCandidateOffset)){
