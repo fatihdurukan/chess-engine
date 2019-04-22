@@ -21,7 +21,7 @@ public class Knight extends Piece {
 
 
     public Knight( final Alliance pieceAlliance,final int piecePosition) {
-        super(piecePosition, pieceAlliance);
+        super(PieceType.KNIGHT,piecePosition, pieceAlliance);
     }
 
     @Override
