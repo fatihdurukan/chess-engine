@@ -54,24 +54,33 @@ public class Pawn extends Piece {
             } else if( currentCandidateOffset == 7 &&
                     !((BoardUtils.EIGHTH_COLUMN[this.piecePosition]) && this.pieceAlliance.isWhite() ||
                     (BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack()))){
-                final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
-                if(this.pieceAlliance != pieceOnCandidate.getPieceAlliance()){
-                    //TODO more work here - add attack move
-                    legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                if(board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
+                    final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
+                    if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
+                        //TODO more work here - add attack move
+                        legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                    }
                 }
+
 
             } else if( currentCandidateOffset == 9 &&
                     !((BoardUtils.FIRST_COLUMN[this.piecePosition]) && this.pieceAlliance.isWhite() ||
                      (BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack()))){
-                final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
-                if(this.pieceAlliance != pieceOnCandidate.getPieceAlliance()){
-                    //TODO more work here - add attack move
-                    legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                if(board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
+                    final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
+                    if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
+                        //TODO more work here - add attack move
+                        legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                    }
                 }
-
             }
         }
 
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    @Override
+    public String toString(){
+        return PieceType.PAWN.toString();
     }
 }
