@@ -6,6 +6,7 @@ import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 import java.util.*;
 
@@ -20,7 +21,7 @@ public class Board {
     private final Player currentPlayer;
 
 
-    private Board(Builder builder){
+    private Board(final Builder builder){
         this.gameBoard = createGameBoard(builder);
         this.whitePieces = calculateActivePieces(this.gameBoard, Alliance.WHITE);
         this.blackPieces = calculateActivePieces(this.gameBoard, Alliance.BLACK);
@@ -30,8 +31,7 @@ public class Board {
 
         this.whitePlayer = new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
         this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
-
-        this.currentPlayer = null;
+        this.currentPlayer = builder.nextMoveMaker.choosePlayer(this.whitePlayer, this.blackPlayer);
     }
 
 
@@ -41,7 +41,7 @@ public class Board {
         for( int i=0; i < BoardUtils.NUM_TILES; i++){
             final String tileText = this.gameBoard.get(i).toString();
             builder.append(String.format("%3s", tileText));
-            if( (i+1) % BoardUtils.NUM_TILES_PER_ROW ==0 ){
+            if( (i+1) % BoardUtils.NUM_TILES_PER_ROW == 0 ){
                 builder.append("\n");
             }
         }
@@ -70,9 +70,12 @@ public class Board {
 
 
 
+
     private Collection<Move> calculateLegalMoves(Collection<Piece> pieces) {
 
         final List<Move> legalMoves = new ArrayList<>();
+
+        //using polymorphism Piece abstract class will start calculateLegalMoves of each piece
 
         for(final Piece piece : pieces){
             legalMoves.addAll(piece.calculateLegalMoves(this));
@@ -85,6 +88,7 @@ public class Board {
     private static Collection<Piece> calculateActivePieces(final List<Tile> gameBoard, final Alliance alliance) {
         final List<Piece> activePieces = new ArrayList<>();
 
+        //checking board tile by tile and if we see a piece on tile, add to list
         for(final Tile tile : gameBoard){
             if(tile.isTileOccupied()){
                 final Piece piece = tile.getPiece();
@@ -157,6 +161,14 @@ public class Board {
 
     }
 
+    public Iterable<Move> getAllLegalMoves(){
+        return Iterables.unmodifiableIterable(Iterables.concat(this.whitePlayer.getLegalMoves(), this.blackPlayer.getLegalMoves()));
+    }
+
+
+    /*
+    Separate the construction of a complex object from its representation
+    so that the same construction process can create different representations.  */
 
     public static class Builder{
 

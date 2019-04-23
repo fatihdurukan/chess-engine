@@ -10,8 +10,17 @@ public abstract class Tile {
 
     protected final int tileCoordinate;
 
+    /*Instead of creating new tile every time in the game
+        it has been created once.
+     */
     private static final Map<Integer, EmptyTile> EMPTY_TILES_CACHE = createAllPossibleEmptyTiles();
 
+    public abstract boolean isTileOccupied();
+    public abstract Piece getPiece();
+
+    private Tile(final int tileCoordinate){
+        this.tileCoordinate = tileCoordinate;
+    }
 
     private static Map<Integer, EmptyTile> createAllPossibleEmptyTiles() {
 
@@ -28,13 +37,7 @@ public abstract class Tile {
         return piece != null ? new OccupiedTile(tileCoordinate, piece) : EMPTY_TILES_CACHE.get(tileCoordinate);
     }
 
-    private Tile(final int tileCoordinate){
-        this.tileCoordinate = tileCoordinate;
-    }
-
-    public abstract boolean isTileOccupied();
-     public abstract Piece getPiece();
-
+    //Sub-classes
 
      public static final class EmptyTile extends Tile{
 

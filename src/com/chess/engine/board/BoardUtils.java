@@ -11,22 +11,24 @@ public class BoardUtils {
     public static final boolean[] SECOND_ROW = initRow(8);
     public static final boolean[] SEVENTH_ROW = initRow(48);
 
-    private static boolean[] initRow(int rowNumber) {
-        final boolean[] row = new boolean[NUM_TILES];
-        do{
-
-            row[rowNumber] = true;
-            rowNumber++;
-        }while(rowNumber % NUM_TILES_PER_ROW != 0);
-
-            return row;
-    }
 
     public static final int NUM_TILES = 64;
     public static final int NUM_TILES_PER_ROW = 8;
 
+    //BoardUtils is not meant to instantiate so throw exception
     private BoardUtils(){
         throw new RuntimeException("You cannot instantiate me!");
+    }
+
+
+    private static boolean[] initRow(int rowNumber) {
+        final boolean[] row = new boolean[NUM_TILES];
+        do{
+            row[rowNumber] = true;
+            rowNumber++;
+        }while(rowNumber % NUM_TILES_PER_ROW != 0);
+
+        return row;
     }
 
     private static boolean[] initColumn(int columnNumber) {

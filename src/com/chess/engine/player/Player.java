@@ -28,6 +28,7 @@ public abstract class Player {
         this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty();
     }
 
+    //check if the piece position is in the list of opponents moves list
     private static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
         final List<Move> attackMove = new ArrayList<>();
         for( final Move move : moves){
@@ -46,7 +47,7 @@ public abstract class Player {
             }
         }
 
-        throw new RuntimeException("Shold not reach here! Not a valid board");
+        throw new RuntimeException("Should not reach here! Not a valid board");
     }
 
     public Collection<Move> getLegalMoves(){
@@ -62,7 +63,7 @@ public abstract class Player {
         return this.isInCheck;
     }
 
-    //TODO implement this methods below!
+
     public boolean isInCheckMate(){
         return this.isInCheck && !hasEscapeMoves();
     }
@@ -91,8 +92,6 @@ public abstract class Player {
         }
         return false;
     }
-
-
 
 
     public MoveTransition makeMove(final Move move){
