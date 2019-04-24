@@ -15,7 +15,7 @@ public class Table {
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
 
-    private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600,600);
+    private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(800,800);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
     private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10,10);
 
@@ -48,6 +48,15 @@ public class Table {
             }
         });
         fileMenu.add(openPGN);
+
+        final JMenuItem exitMenuItem = new JMenuItem("Exit ");
+        exitMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        fileMenu.add(exitMenuItem);
         return fileMenu;
     }
 
@@ -77,6 +86,9 @@ public class Table {
 
         private final int tileID;
 
+        private final Color lightTileColor = Color.decode("#FFFACD");
+        private final Color darkTileColor = Color.decode("#593E1A");
+
         TilePanel(final BoardPanel boardPanel, final int tileID){
             super(new GridBagLayout());
             this.tileID = tileID;
@@ -86,7 +98,17 @@ public class Table {
         }
 
         private void assingTileColor(){
-
+            if(BoardUtils.FIRST_ROW[this.tileID] ||
+               BoardUtils.THIRD_ROW[this.tileID] ||
+               BoardUtils.FIFTH_ROW[this.tileID] ||
+               BoardUtils.SEVENTH_ROW[this.tileID] ){
+                setBackground(this.tileID % 2 == 0 ? lightTileColor : darkTileColor);
+            } else if ( BoardUtils.SECOND_ROW[this.tileID] ||
+                        BoardUtils.FOURTH_ROW[this.tileID] ||
+                        BoardUtils.SIXTH_ROW[this.tileID] ||
+                        BoardUtils.EIGHTH_ROW[this.tileID] ){
+                setBackground(this.tileID % 2 != 0 ? lightTileColor : darkTileColor);
+            }
         }
 
     }
