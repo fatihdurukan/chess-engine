@@ -1,12 +1,11 @@
 package com.chess.engine.pieces;
 
 import com.chess.engine.Alliance;
+import com.chess.engine.board.Move;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
-import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.google.common.collect.ImmutableList;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +15,7 @@ public class Bishop extends Piece {
 
     public final static int[] CANDIATE_MOVE_VECTOR_COORDINATES = {-9, -7, 7, 9};
 
-    public Bishop( Alliance pieceAlliance,int piecePosition) {
+    public Bishop(Alliance pieceAlliance, int piecePosition) {
         super(PieceType.BISHOP,piecePosition, pieceAlliance);
     }
 

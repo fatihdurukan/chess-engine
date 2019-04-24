@@ -1,17 +1,15 @@
 package com.chess.engine.pieces;
 
 import com.chess.engine.Alliance;
-import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
+import com.chess.engine.board.Board;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static com.chess.engine.board.Move.*;
 
 public class Knight extends Piece {
 
@@ -20,7 +18,7 @@ public class Knight extends Piece {
 
 
 
-    public Knight( final Alliance pieceAlliance,final int piecePosition) {
+    public Knight(final Alliance pieceAlliance, final int piecePosition) {
         super(PieceType.KNIGHT,piecePosition, pieceAlliance);
     }
 
@@ -52,7 +50,7 @@ public class Knight extends Piece {
 
                 //check if coordinate is occupied
                 if(!candiateDestinationTile.isTileOccupied()){
-                        legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                        legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
                 }
                 //if coordinates occupied
                 else {
@@ -61,7 +59,7 @@ public class Knight extends Piece {
                     final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                     //check that occupant is enemy. If enemy you might attack
                     if(this.pieceAlliance != pieceAlliance){
-                        legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
+                        legalMoves.add(new Move.AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
                     }
                 }
             }

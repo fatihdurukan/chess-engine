@@ -5,6 +5,7 @@ import com.chess.engine.pieces.*;
 import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
+//import com.chess.engine.pieces.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 

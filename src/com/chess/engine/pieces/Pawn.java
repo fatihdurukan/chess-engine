@@ -1,10 +1,9 @@
 package com.chess.engine.pieces;
 
+import com.chess.engine.board.Move;
 import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
-import com.chess.engine.board.Move;
-import com.chess.engine.board.Move.MajorMove;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class Pawn extends Piece {
 
             if(currentCandidateOffset == 8 && !board.getTile(candidateDestinationCoordinate).isTileOccupied()){
                 //TODO more work here!!(deal with promotions)
-                legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
                 //if pawn is about to make first moves with two sqaures
             }else if(currentCandidateOffset == 16 && this.isFirstMove() &&
                     (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceAlliance().isBlack()) ||
@@ -48,7 +47,7 @@ public class Pawn extends Piece {
                     //if the next and next next pile is avaible, make move
                     if(!board.getTile(behindCandidateDestinationCoordinate).isTileOccupied() &&
                             !board.getTile(candidateDestinationCoordinate).isTileOccupied()){
-                        legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                        legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
                     }
               //edge cases
             } else if( currentCandidateOffset == 7 &&
@@ -58,7 +57,7 @@ public class Pawn extends Piece {
                     final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
                     if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
                         //TODO more work here - add attack move
-                        legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                        legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
                     }
                 }
 
@@ -70,7 +69,7 @@ public class Pawn extends Piece {
                     final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
                     if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
                         //TODO more work here - add attack move
-                        legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                        legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
                     }
                 }
             }
