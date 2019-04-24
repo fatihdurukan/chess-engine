@@ -38,7 +38,8 @@ public class WhitePlayer extends Player{
     }
 
     @Override
-    protected Collection<Move> calculateKingCastles(Collection<Move> playerLegals, Collection<Move> opponentLegals) {
+    protected Collection<Move> calculateKingCastles(final Collection<Move> playerLegals,
+                                                    final Collection<Move> opponentLegals) {
 
         /*
         -The king and the chosen rook are on the player's first rank.
@@ -60,8 +61,10 @@ public class WhitePlayer extends Player{
                     if (Player.calculateAttacksOnTile(61, opponentLegals).isEmpty() &&
                         Player.calculateAttacksOnTile(62, opponentLegals).isEmpty() &&
                         rookTile.getPiece().getPieceType().isRook()) {
-                        //TODO Add a castlemove!
-                        kingCastles.add(null);
+
+                        kingCastles.add(new Move.KingSideCastleMove(this.board, this.playerKing, 62,
+                                                                    (Rook)rookTile.getPiece(), rookTile.getTileCoordinate(),
+                                                                    61));
                     }
                 }
             }
@@ -74,13 +77,12 @@ public class WhitePlayer extends Player{
             final Tile rookTile = this.board.getTile(56);
 
             if(rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove()){
-                //TODO Add a castlemove!
-                kingCastles.add(null);
+
+                kingCastles.add(new Move.QueenSideCastleMove(this.board, this.playerKing, 58,
+                                                             (Rook)rookTile.getPiece(), rookTile.getTileCoordinate(),
+                                                            59));
             }
-
         }
-
-
         return ImmutableList.copyOf(kingCastles);
     }
 }
