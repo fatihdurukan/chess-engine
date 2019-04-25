@@ -205,6 +205,7 @@ public class Table {
                         if(sourceTile == null){
                             sourceTile = chessBoard.getTile(tileID);
                             humanMovedPiece = sourceTile.getPiece();
+
                             if(humanMovedPiece == null){
                                 sourceTile = null;
                             }
@@ -280,20 +281,26 @@ public class Table {
         }
 
         private void highlightLegals(final Board board){
+
             if (highlightLegalMoves){
+
                 for (final Move move : pieceLegalMoves(board)){
+
                     if(move.getDestinationCoordinate() == this.tileID){
+
                         try{
                             add(new JLabel(new ImageIcon(ImageIO.read(new File("art/misc/green_dot.png")))));
                         } catch (Exception e){
                             e.printStackTrace();
                         }
                     }
+
                 }
             }
         }
 
         private Collection<Move> pieceLegalMoves (final Board board){
+
             if(humanMovedPiece != null && humanMovedPiece.getPieceAlliance() == board.getCurrentPlayer().getAlliance()){
                 return humanMovedPiece.calculateLegalMoves(board);
             }
