@@ -1,11 +1,16 @@
 package com.chess.gui;
 
+import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +19,13 @@ public class Table {
 
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
+    private Board chessBoard;
 
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(800,800);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
     private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10,10);
+
+    private static String defaultPieceImagesPath = "art/fancy/";
 
     public Table(){
         this.gameFrame = new JFrame("JChess");
@@ -25,6 +33,7 @@ public class Table {
         final JMenuBar tableMenuBar = createTableMenuBar();
         this.gameFrame.setJMenuBar(tableMenuBar);
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
+        this.chessBoard = Board.createStandardBoard();
         this.boardPanel = new BoardPanel();
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 
@@ -94,19 +103,35 @@ public class Table {
             this.tileID = tileID;
             setPreferredSize(TILE_PANEL_DIMENSION);
             assingTileColor();
+            assignTilePieceIcon(chessBoard);
             validate();
         }
 
+        private void assignTilePieceIcon(final Board board){
+            this.removeAll();
+            if(board.getTile(this.tileID).isTileOccupied()){
+
+                try {
+                    final BufferedImage image =
+                            ImageIO.read(new File(defaultPieceImagesPath + board.getTile(this.tileID).getPiece().getPieceAlliance().toString().substring(0,1) +
+                                    board.getTile(this.tileID).getPiece().toString() + ".gif"));
+                    add(new JLabel(new ImageIcon(image)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         private void assingTileColor(){
-            if(BoardUtils.FIRST_ROW[this.tileID] ||
-               BoardUtils.THIRD_ROW[this.tileID] ||
-               BoardUtils.FIFTH_ROW[this.tileID] ||
-               BoardUtils.SEVENTH_ROW[this.tileID] ){
+            if(BoardUtils.EIGHTH_RANK[this.tileID] ||
+               BoardUtils.SIXTH_RANK[this.tileID] ||
+               BoardUtils.FOURTH_RANK[this.tileID] ||
+               BoardUtils.SECOND_RANK[this.tileID] ){
                 setBackground(this.tileID % 2 == 0 ? lightTileColor : darkTileColor);
-            } else if ( BoardUtils.SECOND_ROW[this.tileID] ||
-                        BoardUtils.FOURTH_ROW[this.tileID] ||
-                        BoardUtils.SIXTH_ROW[this.tileID] ||
-                        BoardUtils.EIGHTH_ROW[this.tileID] ){
+            } else if ( BoardUtils.SEVENTH_RANK[this.tileID] ||
+                        BoardUtils.FIFTH_RANK[this.tileID] ||
+                        BoardUtils.THIRD_RANK[this.tileID] ||
+                        BoardUtils.FIRST_RANK[this.tileID] ){
                 setBackground(this.tileID % 2 != 0 ? lightTileColor : darkTileColor);
             }
         }

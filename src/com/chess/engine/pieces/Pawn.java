@@ -39,8 +39,8 @@ public class Pawn extends Piece {
                 legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
                 //if pawn is about to make first moves with two sqaures
             }else if(currentCandidateOffset == 16 && this.isFirstMove() &&
-                    (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceAlliance().isBlack()) ||
-                    (BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceAlliance().isWhite())){
+                    (BoardUtils.SEVENTH_RANK[this.piecePosition] && this.getPieceAlliance().isBlack()) ||
+                    (BoardUtils.SECOND_RANK[this.piecePosition] && this.getPieceAlliance().isWhite())){
                 //get the two more squares destination to check
                     final int behindCandidateDestinationCoordinate = this.piecePosition + (this.getPieceAlliance().getDirection() * 8);
 
