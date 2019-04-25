@@ -2,17 +2,27 @@ package com.chess.gui;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
+import com.chess.engine.board.Move;
+import com.chess.engine.board.Tile;
+import com.chess.engine.pieces.Piece;
+import com.chess.engine.player.MoveTransition;
+import com.google.common.collect.Lists;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.swing.SwingUtilities.isLeftMouseButton;
+import static javax.swing.SwingUtilities.isRightMouseButton;
 
 public class Table {
 
@@ -20,6 +30,13 @@ public class Table {
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
     private Board chessBoard;
+
+    private Tile sourceTile;
+    private Tile destinationTile;
+    private Piece humanMovedPiece;
+    private BoardDirection boardDirection;
+
+    private boolean highlightLegalMoves;
 
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(800,800);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
@@ -70,6 +87,35 @@ public class Table {
     }
 
 
+    public enum BoardDirection{
+
+        NORMAL{
+            @Override
+            List<TilePanel> traverse(List<TilePanel> boardTiles) {
+                return boardTiles;
+            }
+
+            @Override
+            BoardDirection opposite() {
+                return FLIPPED;
+            }
+        },
+
+        FLIPPED {
+            @Override
+            List<TilePanel> traverse(List<TilePanel> boardTiles) {
+                return Lists.reverse(boardTiles);
+            }
+
+            @Override
+            BoardDirection opposite() {
+                return NORMAL;
+            }
+        };
+
+        abstract List<TilePanel> traverse(final List<TilePanel> boardTiles);
+        abstract BoardDirection opposite();
+    }
 
     private class BoardPanel extends JPanel{
         List<TilePanel> boardTiles;
@@ -84,7 +130,16 @@ public class Table {
             }
             setPreferredSize(BOARD_PANEL_DIMENSION);
             validate();
+        }
 
+        public void drawBoard(final Board board){
+            removeAll();
+            for(final TilePanel tilePanel: boardTiles){
+                tilePanel.drawTile(board);
+                add(tilePanel);
+            }
+            validate();
+            repaint();
         }
     }
 
@@ -104,7 +159,78 @@ public class Table {
             setPreferredSize(TILE_PANEL_DIMENSION);
             assingTileColor();
             assignTilePieceIcon(chessBoard);
+
+            addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(final MouseEvent e) {
+
+                    //right click cancels the selection
+                    if(isRightMouseButton(e)) {
+                        sourceTile = null;
+                        destinationTile = null;
+                        humanMovedPiece = null;
+                    } else if (isLeftMouseButton(e)){
+                        //the user hasn't clicked on any other pieces
+                        if(sourceTile == null){
+                            sourceTile = chessBoard.getTile(tileID);
+                            humanMovedPiece = sourceTile.getPiece();
+                            if(humanMovedPiece == null){
+                                sourceTile = null;
+                            }
+                        } else{
+                            // second click
+                            destinationTile = chessBoard.getTile(tileID);
+                            //TODO
+                            final Move move = Move.MoveFactory.createMove(chessBoard, sourceTile.getTileCoordinate(), destinationTile.getTileCoordinate());
+                            final MoveTransition transition = chessBoard.getCurrentPlayer().makeMove(move);
+                            if(transition.getMoveStatus().isDone()){
+                                chessBoard = transition.getTransitionBoard();
+                                //TODO add the move that was made to the move log
+                            }
+                            sourceTile = null;
+                            destinationTile = null;
+                            humanMovedPiece = null;
+                        }
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                boardPanel.drawBoard(chessBoard);
+                            }
+                        });
+                    }
+
+                }
+
+                @Override
+                public void mousePressed(final MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(final MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(final MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(final MouseEvent e) {
+
+                }
+            });
+
             validate();
+        }
+
+        public void drawTile(final Board board){
+            assingTileColor();
+            assignTilePieceIcon(board);
+            //highlightLegals(board);
+            validate();
+            repaint();
         }
 
         private void assignTilePieceIcon(final Board board){
