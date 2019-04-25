@@ -19,6 +19,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static javax.swing.SwingUtilities.isLeftMouseButton;
@@ -52,14 +54,16 @@ public class Table {
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
         this.chessBoard = Board.createStandardBoard();
         this.boardPanel = new BoardPanel();
+        this.boardDirection = BoardDirection.NORMAL;
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
-
         this.gameFrame.setVisible(true);
+        this.highlightLegalMoves = false;
     }
 
     private JMenuBar createTableMenuBar() {
         final JMenuBar tableMenuBar = new JMenuBar();
         tableMenuBar.add(createFileMenu());
+        tableMenuBar.add(createPreferencesMenu());
         return tableMenuBar;
 
     }
@@ -84,6 +88,33 @@ public class Table {
         });
         fileMenu.add(exitMenuItem);
         return fileMenu;
+    }
+
+
+    private JMenu createPreferencesMenu(){
+        final JMenu preferencesMenu = new JMenu("Preferences");
+        final JMenuItem flipBoardMenuItem = new JMenuItem("Flip Board");
+        flipBoardMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boardDirection = boardDirection.opposite();
+                boardPanel.drawBoard(chessBoard);
+            }
+        });
+        preferencesMenu.add(flipBoardMenuItem);
+        preferencesMenu.addSeparator();
+
+        final JCheckBoxMenuItem legalMoveHighlighterCheckBox = new JCheckBoxMenuItem("Highlight Legal Moves", false);
+
+        legalMoveHighlighterCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                highlightLegalMoves = legalMoveHighlighterCheckBox.isSelected();
+            }
+        });
+
+        preferencesMenu.add(legalMoveHighlighterCheckBox);
+        return preferencesMenu;
     }
 
 
@@ -134,7 +165,7 @@ public class Table {
 
         public void drawBoard(final Board board){
             removeAll();
-            for(final TilePanel tilePanel: boardTiles){
+            for(final TilePanel tilePanel: boardDirection.traverse(boardTiles)){
                 tilePanel.drawTile(board);
                 add(tilePanel);
             }
@@ -228,7 +259,7 @@ public class Table {
         public void drawTile(final Board board){
             assingTileColor();
             assignTilePieceIcon(board);
-            //highlightLegals(board);
+            highlightLegals(board);
             validate();
             repaint();
         }
@@ -246,6 +277,27 @@ public class Table {
                     e.printStackTrace();
                 }
             }
+        }
+
+        private void highlightLegals(final Board board){
+            if (highlightLegalMoves){
+                for (final Move move : pieceLegalMoves(board)){
+                    if(move.getDestinationCoordinate() == this.tileID){
+                        try{
+                            add(new JLabel(new ImageIcon(ImageIO.read(new File("art/misc/green_dot.png")))));
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
+        private Collection<Move> pieceLegalMoves (final Board board){
+            if(humanMovedPiece != null && humanMovedPiece.getPieceAlliance() == board.getCurrentPlayer().getAlliance()){
+                return humanMovedPiece.calculateLegalMoves(board);
+            }
+            return Collections.emptyList();
         }
 
         private void assingTileColor(){
