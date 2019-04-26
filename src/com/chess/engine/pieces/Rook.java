@@ -50,7 +50,7 @@ public class Rook extends Piece {
                     else {
 
                         final Piece pieceAtDestination = candiateDestinationTile.getPiece();
-                        final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
+                        final Alliance pieceAlliance = pieceAtDestination.getPieceAllegiance();
                         //check that occupant is enemy. If enemy you might attack
                         if(this.pieceAlliance != pieceAlliance){
                             legalMoves.add(new Move.AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
@@ -68,7 +68,7 @@ public class Rook extends Piece {
 
     @Override
     public Rook movePiece(final Move move) {
-        return new Rook(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+        return new Rook(move.getMovedPiece().getPieceAllegiance(), move.getDestinationCoordinate());
     }
 
 

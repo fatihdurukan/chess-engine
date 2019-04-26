@@ -32,7 +32,7 @@ public class Pawn extends Piece {
         for(int currentCandidateOffset :  CANDIATE_MOVE_VECTOR_COORDINATES){
 
             //get alliance color of piece so we could decide which way pawns should go(if white go up, otherwise down)
-            final int candidateDestinationCoordinate = this.piecePosition + (this.getPieceAlliance().getDirection() * currentCandidateOffset);
+            final int candidateDestinationCoordinate = this.piecePosition + (this.getPieceAllegiance().getDirection() * currentCandidateOffset);
 
             if(!BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
                 continue;
@@ -43,10 +43,10 @@ public class Pawn extends Piece {
                 legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
                 //if pawn is about to make first moves with two sqaures
             }else if(currentCandidateOffset == 16 && this.isFirstMove() &&
-                    ((BoardUtils.SEVENTH_RANK[this.piecePosition] && this.getPieceAlliance().isBlack()) ||
-                    (BoardUtils.SECOND_RANK[this.piecePosition] && this.getPieceAlliance().isWhite()))){
+                    ((BoardUtils.SEVENTH_RANK[this.piecePosition] && this.getPieceAllegiance().isBlack()) ||
+                    (BoardUtils.SECOND_RANK[this.piecePosition] && this.getPieceAllegiance().isWhite()))){
                 //get the two more squares destination to check
-                    final int behindCandidateDestinationCoordinate = this.piecePosition + (this.getPieceAlliance().getDirection() * 8);
+                    final int behindCandidateDestinationCoordinate = this.piecePosition + (this.getPieceAllegiance().getDirection() * 8);
 
                     //if the next and next next pile is avaible, make move
                     if(!board.getTile(behindCandidateDestinationCoordinate).isTileOccupied() &&
@@ -59,7 +59,7 @@ public class Pawn extends Piece {
                     (BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack()))){
                 if(board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
-                    if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
+                    if (this.pieceAlliance != pieceOnCandidate.getPieceAllegiance()) {
                         //TODO more work here - add attack move
                         legalMoves.add(new Move.PawnAttackMove(board, this, candidateDestinationCoordinate, pieceOnCandidate));
                     }
@@ -71,7 +71,7 @@ public class Pawn extends Piece {
                      (BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack()))){
                 if(board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
-                    if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
+                    if (this.pieceAlliance != pieceOnCandidate.getPieceAllegiance()) {
                         //TODO more work here - add attack move
                         legalMoves.add(new Move.PawnAttackMove(board, this, candidateDestinationCoordinate, pieceOnCandidate));
                     }
@@ -84,7 +84,7 @@ public class Pawn extends Piece {
 
     @Override
     public Pawn movePiece(final Move move) {
-        return new Pawn(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+        return new Pawn(move.getMovedPiece().getPieceAllegiance(), move.getDestinationCoordinate());
     }
 
 

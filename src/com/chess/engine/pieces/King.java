@@ -51,7 +51,7 @@ public class King extends Piece {
                 else {
 
                     final Piece pieceAtDestination = candiateDestinationTile.getPiece();
-                    final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
+                    final Alliance pieceAlliance = pieceAtDestination.getPieceAllegiance();
                     //check that occupant is enemy. If enemy you might attack
                     if(this.pieceAlliance != pieceAlliance){
                         legalMoves.add(new Move.AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
@@ -65,7 +65,7 @@ public class King extends Piece {
 
     @Override
     public King movePiece(final Move move) {
-        return new King(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+        return new King(move.getMovedPiece().getPieceAllegiance(), move.getDestinationCoordinate());
     }
 
 

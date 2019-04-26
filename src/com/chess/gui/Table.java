@@ -303,7 +303,7 @@ public class Table {
 
                 try {
                     final BufferedImage image =
-                            ImageIO.read(new File(defaultPieceImagesPath + board.getTile(this.tileID).getPiece().getPieceAlliance().toString().substring(0,1) +
+                            ImageIO.read(new File(defaultPieceImagesPath + board.getTile(this.tileID).getPiece().getPieceAllegiance().toString().substring(0,1) +
                                     board.getTile(this.tileID).getPiece().toString() + ".gif"));
                     add(new JLabel(new ImageIcon(image)));
                 } catch (IOException e) {
@@ -333,7 +333,7 @@ public class Table {
 
         private Collection<Move> pieceLegalMoves (final Board board){
 
-            if(humanMovedPiece != null && humanMovedPiece.getPieceAlliance() == board.getCurrentPlayer().getAlliance()){
+            if(humanMovedPiece != null && humanMovedPiece.getPieceAllegiance() == board.getCurrentPlayer().getAlliance()){
                 return humanMovedPiece.calculateLegalMoves(board);
             }
             return Collections.emptyList();

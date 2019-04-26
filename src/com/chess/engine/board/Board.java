@@ -19,7 +19,7 @@ public class Board {
 
     private final WhitePlayer whitePlayer;
     private final BlackPlayer blackPlayer;
-    private final Player currentPlayer;
+    final Player currentPlayer;
 
 
     private Board(final Builder builder){
@@ -93,7 +93,7 @@ public class Board {
         for(final Tile tile : gameBoard){
             if(tile.isTileOccupied()){
                 final Piece piece = tile.getPiece();
-                if(piece.getPieceAlliance() == alliance){
+                if(piece.getPieceAllegiance() == alliance){
                     activePieces.add(piece);
                 }
             }
