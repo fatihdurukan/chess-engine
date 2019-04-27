@@ -27,6 +27,7 @@ public abstract class Move {
     public Move(final Board board,
                 final int destinationCoordinate){
         this.board = board;
+        System.out.println("HEY CONSTORTOR NULL YAPTI");
         this.movedPiece = null;
         this.destinationCoordinate = destinationCoordinate;
         this.isFirstMove = false;
@@ -42,6 +43,8 @@ public abstract class Move {
     }
 
     public int getCurrentCoordinate(){
+        System.out.println("HEY: " + this.movedPiece);
+
         return this.movedPiece.getPiecePosition();
     }
 
@@ -58,27 +61,26 @@ public abstract class Move {
     }
 
     @Override
-    public int hashCode(){
-        final int prime = 31;
+    public int hashCode() {
         int result = 1;
-        result = prime * result + this.destinationCoordinate;
-        result = prime * result + this.movedPiece.hashCode();
-        result = prime * result + this.movedPiece.getPiecePosition();
+        result = 31 * result + this.destinationCoordinate;
+        System.out.println("HASHCODE: " + this.movedPiece);
+        result = 31 * result + this.movedPiece.hashCode();
+        result = 31 * result + this.movedPiece.getPiecePosition();
+        result = result + (isFirstMove ? 1 : 0);
         return result;
     }
 
     @Override
-    public boolean equals(final Object other){
-        if(this == other){
+    public boolean equals(final Object other) {
+        if (this == other) {
             return true;
         }
-
-        if(!(other instanceof Move)){
+        if (!(other instanceof Move)) {
             return false;
         }
-
         final Move otherMove = (Move) other;
-        return  getCurrentCoordinate() == otherMove.getCurrentCoordinate() &&
+        return getCurrentCoordinate() == otherMove.getCurrentCoordinate() &&
                 getDestinationCoordinate() == otherMove.getDestinationCoordinate() &&
                 getMovedPiece().equals(otherMove.getMovedPiece());
     }
@@ -243,6 +245,11 @@ public abstract class Move {
 
         }
 
+        @Override
+        public String toString(){
+            return BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+        }
+
     }
 
     //SUB-CLASSES
@@ -341,7 +348,7 @@ public abstract class Move {
     public static final class NullMove extends Move{
 
         public NullMove() {
-            super(null, null,-1);
+            super(null, -1);
         }
 
         @Override

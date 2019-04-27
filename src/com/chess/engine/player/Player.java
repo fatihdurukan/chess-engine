@@ -55,6 +55,7 @@ public abstract class Player {
     }
 
     public boolean isMoveLegal(final Move move){
+        System.out.println("Hop: " + move);
        return this.legalMoves.contains(move);
     }
 
