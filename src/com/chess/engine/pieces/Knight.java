@@ -3,6 +3,8 @@ package com.chess.engine.pieces;
 import com.chess.engine.Alliance;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.MajorAttackMove;
+import com.chess.engine.board.Move.MajorMove;
 import com.chess.engine.board.Tile;
 import com.chess.engine.board.Board;
 import com.google.common.collect.ImmutableList;
@@ -54,7 +56,7 @@ public class Knight extends Piece {
 
                 //check if coordinate is occupied
                 if(!candiateDestinationTile.isTileOccupied()){
-                        legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
+                        legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
                 }
                 //if coordinates occupied
                 else {
@@ -63,7 +65,7 @@ public class Knight extends Piece {
                     final Alliance pieceAlliance = pieceAtDestination.getPieceAllegiance();
                     //check that occupant is enemy. If enemy you might attack
                     if(this.pieceAlliance != pieceAlliance){
-                        legalMoves.add(new Move.AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
+                        legalMoves.add(new MajorAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
                     }
                 }
             }
